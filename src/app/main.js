@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 import Vue from 'vue';
-import App from './components/App.vue';
+import App from './components/App';
 
-console.log(App);
-console.log(Vue);
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  template: '<App/>',
+  components: { App },
+})

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <h1>Tak</h1>
+        <h1>Tak <i class="fa fa-rocket"></i></h1>
       </div>
     </div>
   </div>

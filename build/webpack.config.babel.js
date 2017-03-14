@@ -5,7 +5,6 @@ import CleanPlugin from 'clean-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import path from 'path';
 
 import webpackOptimizedConfig from './webpack.config.optimize';
 import webpackWatchConfig from './webpack.config.watch';
@@ -27,7 +26,7 @@ let webpackConfig = {
     rules: [
       {
         enforce: 'pre',
-        test: /\.js?$/,
+        test: /\.(js?|vue)$/,
         include: config.paths.src,
         use: [{
           loader: 'eslint-loader',
@@ -41,14 +40,17 @@ let webpackConfig = {
           loader: 'babel-loader',
           options: {
             presets: [
-              ['es2015', {modules: false}],
+              ['es2015'],
             ],
           },
         }],
       },
       {
-        test: /\.vue/,
-        loader: 'vue-loader',
+        test: /\.vue$/,
+        include: config.paths.src,
+        use: [
+          { loader: 'vue-loader' },
+        ],
       },
       {
         test: /\.css$/,
@@ -97,6 +99,10 @@ let webpackConfig = {
       config.paths.src,
       'node_modules',
     ],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js',
+    },
+    extensions: ['.js', '.vue', '.json'],
     enforceExtension: false,
   },
   plugins: [
