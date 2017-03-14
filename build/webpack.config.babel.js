@@ -5,6 +5,7 @@ import CleanPlugin from 'clean-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import path from 'path';
 
 import webpackOptimizedConfig from './webpack.config.optimize';
 import webpackWatchConfig from './webpack.config.watch';
@@ -125,6 +126,7 @@ let webpackConfig = {
       'phaser': 'phaser-ce/build/custom/phaser-split.js',
       'pixi': 'phaser-ce/build/custom/pixi.js',
       'p2': 'phaser-ce/build/custom/p2.js',
+      'phaser-isometric': path.join(config.paths.root, '/lib/phaser-plugin-isometric.js'),
     },
     extensions: ['.js', '.vue', '.json'],
     enforceExtension: false,
