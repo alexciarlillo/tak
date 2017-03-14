@@ -92,6 +92,27 @@ let webpackConfig = {
           { loader: 'file-loader', options: { name: `vendor/${assetsFilenames}.[ext]` } },
         ],
       },
+      {
+        test: /phaser-split\.js/,
+        use: [{
+          loader: 'expose-loader',
+          options: 'Phaser',
+        }],
+      },
+      {
+        test: /pixi\.js/,
+        use: [{
+          loader: 'expose-loader',
+          options: 'PIXI',
+        }],
+      },
+      {
+        test: /p2\.js/,
+        use: [{
+          loader: 'expose-loader',
+          options: 'p2',
+        }],
+      },
     ],
   },
   resolve: {
@@ -101,6 +122,9 @@ let webpackConfig = {
     ],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
+      'phaser': 'phaser-ce/build/custom/phaser-split.js',
+      'pixi': 'phaser-ce/build/custom/pixi.js',
+      'p2': 'phaser-ce/build/custom/p2.js',
     },
     extensions: ['.js', '.vue', '.json'],
     enforceExtension: false,
