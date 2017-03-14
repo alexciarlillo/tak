@@ -14,7 +14,7 @@ new Vue({
   components: { App },
 })
 
-var cursorPos, tileGroup, pieceGroup;
+var cursorPos, tileGroup, pieceGroup, piece;
 
 function preload() {
   for(var dir of ['n', 's', 'e', 'w']) {
@@ -41,13 +41,26 @@ function create() {
   game.stage.backgroundColor = '#333';
   createBoard(game, tileGroup);
 
-  let piece = game.add.isoSprite(3*64, 3*64, 100, 'piece', 0, pieceGroup);
+  piece = game.add.isoSprite(3*64, 3*64, 100, 'piece', 0, pieceGroup);
   game.physics.isoArcade.enable(piece);
   piece.body.collideWorldBounds = true;
   piece.scale.set(0.5, 0.5);
   piece.anchor.set(0.5, 0);
-
+  piece.inputEnabled = true;
+  piece.events.onInputDown.add(toggleActive);
   cursorPos = new Phaser.Plugin.Isometric.Point3();
+}
+
+function toggleActive(piece, pointer) {
+  if(!piece.selected) {
+    piece.body.velocity.setTo(0,0);
+    piece.body.allowGravity = false;
+    piece.selected = true;
+  } else {
+    piece.body.velocity.x = 100;
+    piece.body.z = 0;
+    piece.selected = false;
+  }
 }
 
 function render() {
@@ -70,27 +83,42 @@ function update() {
   // determined from the 2D pointer position without extra trickery. By default, the z position is 0 if not set.
   game.physics.isoArcade.collide(tileGroup);
   game.iso.unproject(game.input.activePointer.position, cursorPos);
-  // Loop through all tiles and test to see if the 3D position from above intersects with the automatically generated IsoSprite tile bounds.
-  pieceGroup.forEach(function (piece) {
 
-      var inBounds = piece.isoBounds.containsXY(cursorPos.x, cursorPos.y);
-      // If it does, do a little animation and tint change.
-      if (!piece.selected && inBounds) {
-          piece.selected = true;
-          piece.tint = 0x86bfda;
-          //piece.body.acceleration.z = 100;
-          //piece.body.position.z = 100;
-          //piece.body.velocity.x = 10;
-          //game.add.tween(piece).to({ isoZ: 4 }, 200, Phaser.Easing.Quadratic.InOut, true);
-      }
-      // If not, revert back to how it was.
-      else if (piece.selected && !inBounds) {
-          piece.selected = false;
-          piece.tint = 0xffffff;
-          //piece.body.position.z = 0;
-          //game.add.tween(piece).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
-      }
-  });
+  if(piece.selected) {
+    piece.body.z = 25;
+  }
+  //
+  // if(piece.moving) {
+  //   //console.log(`body.x: ${piece.body.x} | nextx: ${piece.nextx}`);
+  //   if(piece.body.x) {
+  //     piece.body.velocity.setTo(0,0);
+  //     piece.body.x = piece.nextx;
+  //     piece.body.allowGravity = true;
+  //     piece.moving = false;
+  //   }
+  // }
+  // Loop through all tiles and test to see if the 3D position from above intersects with the automatically generated IsoSprite tile bounds.
+  // pieceGroup.forEach(function (piece) {
+  //
+  //     // when using physics, body is used instead of calculated isoBounds
+  //     var inBounds = piece.isoBounds.containsXY(cursorPos.x, cursorPos.y);
+  //     // If it does, do a little animation and tint change.
+  //     if (!piece.selected && inBounds) {
+  //         piece.selected = true;
+  //         piece.tint = 0x86bfda;
+  //         //piece.body.acceleration.z = 100;
+  //         //piece.body.position.z = 100;
+  //         //piece.body.velocity.x = 10;
+  //         //game.add.tween(piece).to({ isoZ: 4 }, 200, Phaser.Easing.Quadratic.InOut, true);
+  //     }
+  //     // If not, revert back to how it was.
+  //     else if (piece.selected && !inBounds) {
+  //         piece.selected = false;
+  //         piece.tint = 0xffffff;
+  //         //piece.body.position.z = 0;
+  //         //game.add.tween(piece).to({ isoZ: 0 }, 200, Phaser.Easing.Quadratic.InOut, true);
+  //     }
+  // });
 }
 
 function createBoard(game, group) {
