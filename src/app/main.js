@@ -38,7 +38,7 @@ function create() {
   tileGroup = game.add.group();
   pieceGroup = game.add.group();
   game.physics.isoArcade.gravity.setTo(0, 0, -500);
-
+  game.stage.backgroundColor = '#333';
   createBoard(game, tileGroup);
 
   let piece = game.add.isoSprite(3*64, 3*64, 100, 'piece', 0, pieceGroup);
