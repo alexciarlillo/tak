@@ -47,6 +47,10 @@ let webpackConfig = {
         }],
       },
       {
+        test: /\.vue/,
+        loader: 'vue-loader',
+      },
+      {
         test: /\.css$/,
         include: config.paths.src,
         use: ExtractTextPlugin.extract({

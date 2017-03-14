@@ -1,2 +1,6 @@
 /* eslint-disable no-console */
-console.log('Hello World');
+import Vue from 'vue';
+import App from './components/App.vue';
+
+console.log(App);
+console.log(Vue);
