@@ -19,7 +19,6 @@ export default class extends Phaser.State {
     // This is used to set a game canvas-based offset for the 0, 0, 0 isometric coordinate - by default
     // this point would be at screen coordinates 0, 0 (top left) which is usually undesirable.
     this.game.iso.anchor.setTo(0.5, 0.1);
-    console.log(this.game.iso);
   }
 
   create() {

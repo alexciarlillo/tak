@@ -8,6 +8,7 @@ class Board {
     this.piecesGroup = game.add.group();
     this.cursorPos = cursorPos;
     this.moving = false;
+    this.selectedPieces = [];
   }
 
   create() {
@@ -31,6 +32,7 @@ class Board {
         });
 
         this.game.add.existing(tile);
+        this.tileGroup.add(tile);
 
         if(x === 3 && y === 3) {
           let road = new Road({
@@ -40,36 +42,37 @@ class Board {
             z: 100,
             asset: `road`,
             frame: 0,
-            group: this.pieceGroup,
+            group: this.piecesGroup,
           });
 
           tile.pieces.push(road);
           this.game.add.existing(road);
+          this.piecesGroup.add(road);
         }
       }
     }
+
+    console.log(this.tileGroup);
   }
 
   update() {
     this.game.physics.isoArcade.collide(this.tileGroup);
-
   }
 
   render() {
     // Uncomment this to see the debug bodies.
-    // this.tileGroup.forEach(function (tile) {
-    //     this.game.debug.body(tile , 'rgba(189, 221, 235, 0.6)', false);
-    // }, this);
-    //
-    // this.piecesGroup.forEach(function (piece) {
-    //     this.game.debug.body(piece, 'rgba(189, 221, 235, 0.6)', false);
-    // }, this);
+    this.tileGroup.forEach(function (tile) {
+        this.game.debug.body(tile , 'rgba(189, 221, 235, 0.6)', false);
+    }, this);
+
+    this.piecesGroup.forEach(function (piece) {
+        this.game.debug.body(piece, 'rgba(236, 74, 128, 0.6)', false);
+    }, this);
   }
 
   static get SIZE() {
     return 5;
   }
-
 }
 
 export default Board;

@@ -1,8 +1,9 @@
-import Phaser from 'phaser'
+import Phaser from 'phaser';
+import Board from '../Board';
 
 export default class extends Phaser.Plugin.Isometric.IsoSprite {
-  constructor ({ game, x, y, z, asset, frame, group, board }) {
-    super(game, x, y, z, asset, frame, group);
+  constructor ({ game, x, y, z, asset, frame, board }) {
+    super(game, x, y, z, asset, frame);
 
     game.physics.isoArcade.enable(this);
     this.body.collideWorldBounds = true;
@@ -15,14 +16,24 @@ export default class extends Phaser.Plugin.Isometric.IsoSprite {
   }
 
   selectPieces(tile) {
-    for(var piece of tile.pieces) {
-      if(!this.board.moving) {
+    var i;
+    console.log(`Moving: ${this.board.moving} | Tile Pieces: ${tile.pieces.length} | Selected Pieces: ${this.board.selectedPieces.length}`);
+    if(!this.board.moving && tile.pieces.length > 0) {
+      for(i = 0; i < Board.SIZE && tile.pieces.length > 0; i++) {
+        let piece = tile.pieces.pop();
         piece.selected = true;
-        this.board.moving = true;
-      } else {
-        piece.selected = false;
-        this.board.moving = false;
+        this.board.selectedPieces.push(piece);
       }
+      this.board.moving = true;
+    } else {
+      for(i = 0; i < Board.SIZE && this.board.selectedPieces.length > 0; i++) {
+        let piece = this.board.selectedPieces.pop();
+        piece.selected = false;
+        piece.newx = tile.body.x;
+         piece.newy = tile.body.y;
+        tile.pieces.push(piece);
+      }
+      this.board.moving = false;
     }
   }
 

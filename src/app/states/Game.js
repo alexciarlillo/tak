@@ -7,13 +7,13 @@ export default class extends Phaser.State {
     this.board = new Board(this.game, this.cursorPos);
   }
 
+  create() {
+    this.board.create();
+  }
+
   render() {
     this.game.debug.text(this.time.fps || '--', 2, 14, "#a7aebe");
     this.board.render();
-  }
-
-  create() {
-    this.board.create();
   }
 
   update() {
